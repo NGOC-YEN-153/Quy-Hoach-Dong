@@ -1,0 +1,17 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+int main(){
+    string s;cin>>s;
+    ll dp[s.size()];
+    ll prev=0,ans=0;
+    for(ll i = 0 ; i<s.size();i++){
+        //235
+        //2
+        //23 3
+        //235 35 5
+        ans+=prev*10 + (s[i]-48)*(i+1);
+        prev=prev*10 + (s[i]-48)*(i+1);
+    }
+    cout<<ans;
+}
