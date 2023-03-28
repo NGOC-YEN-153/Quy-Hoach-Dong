@@ -1,0 +1,19 @@
+#include <bits/stdc++.h>
+using namespace std;
+int dp[1000005] , a[1000005];
+int main(){
+    int n , s;
+    cin >>n >> s;
+    for(int i = 0 ; i< n ; i++)cin >> a[i];
+    for(int i = 0 ; i<= s ; i++)dp[i] = 1e9;
+    dp[0] = 1;
+    for(int i = 0 ; i < n ;i++){
+        for(int j = 0 ; j <= s ; j++){
+            if(  j - a[i] >= 0 && dp[j - a[i]] != 1e9){
+                dp[j] = min ( dp[j] , dp[j-a[i]] + 1 ) ;
+            }
+        }
+    }
+    if(dp[s] == 1e9)cout<<-1;
+    else cout<<dp[s] -1;
+}
