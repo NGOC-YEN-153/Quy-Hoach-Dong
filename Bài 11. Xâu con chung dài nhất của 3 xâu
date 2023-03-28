@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+struct sv{
+    ll a[105][105];
+};
+ll solve1( string s1, string s2,string s3){
+    ll n1=s1.size() , n2=s2.size() , n3=s3.size();
+    sv dp[105];
+    for(ll i = 0 ; i<= n1 ; i ++){
+        for(ll j = 0 ; j <= n2; j++){
+            for(ll k = 0 ; k <= n3 ; k ++){
+                if(i==0 || j == 0 || k == 0)dp[i].a[j][k]=0;
+                else if( s1[i-1] == s2[j-1] && s2[j-1] == s3[k-1] )dp[i].a[j][k]=dp[i-1].a[j-1][k-1]+1;
+                // i-1 j-1 k
+                //i-1 j k-1
+                // i-1 j k
+                // i j-1 k-1
+                // i j-1 k
+                // i j k -1
+                // i j k
+                else dp[i].a[j][k] = max({dp[i-1].a[j-1][k] , dp[i-1].a[j][k-1] , dp[i-1].a[j][k] , dp[i].a[j-1][k-1] , dp[i].a[j-1][k] , dp[i].a[j][k-1] , dp[i].a[j][k]});
+            }
+        }
+    }
+    return dp[n1].a[n2][n3];
+}
+
+int main(){
+    string s1,s2,s3;
+    cin>>s1>>s2>>s3;
+    cout<<solve1(s1,s2,s3);
+}
