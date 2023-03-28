@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+struct item {
+    ll v, w ;
+};
+ll n, b;
+item dp[5000];
+int main(){
+    cin>>n>>b;
+    item a[n];
+    for(int i=0 ;i<n;i++)cin>>a[i].w;
+    for(int i=0;i<n;i++)cin>>a[i].v;
+    memset(dp,0,sizeof(dp));
+    dp[0].w=1;
+    for(ll i=0;i<n;i++){
+        for(ll j = b ;j>=a[i].w ; j--){
+            if(dp[j-a[i].w].w){
+                dp[j].w=1;
+                dp[j].v= max ( dp[j-a[i].w].v+ a[i].v , dp[j].v);
+            }
+        }
+    }
+    ll ans=0;
+    for(ll i = b ; i>=0 ; i --){
+        if(dp[i].w)ans=max (ans , dp[i].v);
+    }
+    cout<<ans;
+}
