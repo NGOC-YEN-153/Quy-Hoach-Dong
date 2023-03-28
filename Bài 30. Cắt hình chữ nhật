@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+ll dp[1005][1005];
+void solve (){
+    ll a , b;
+    cin >> a >> b;
+    for(int i= 1 ;i <= a; i++){
+        for(int j = 1 ;j<= b ;j ++){
+            if(i == j){
+                dp[i][j] = 0 ;
+                continue;
+            }
+            ll x = 1e9;
+            for(int k = 1 ;k < j; k++)x  =min (x , 1 + dp[i][k] + dp[i][j-k]);
+            for(int k = 1 ;k < i; k++)x = min(x , 1 + dp[i-k][j] + dp[k][j]);
+            dp[i][j] = x;
+        }
+    }
+    cout<<dp[a][b];
+}
+int main(){
+    solve();
+    return 0;
+}
