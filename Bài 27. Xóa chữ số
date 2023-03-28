@@ -1,0 +1,23 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+ll find(ll n){
+    ll ans=0;
+    while(n){
+        ans=max(ans,n%10);
+        n/=10;
+    }
+    return ans;
+}
+void solve(){
+    ll n;cin>>n;
+    ll cnt=0;
+    while(n){
+        cnt++;
+        n-=find(n);
+    }
+    cout<<cnt;
+}
+int main(){
+    solve();
+}
