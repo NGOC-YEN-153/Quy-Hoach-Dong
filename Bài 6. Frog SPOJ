@@ -1,0 +1,20 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+ll mod = 1e9 +7;
+ll n,k;
+ll a[100005];
+void sang (){
+    a[0]=1;
+    a[1]=1;
+    a[2]=2;
+    for(ll i = 3 ; i<= n ; i ++){
+        a[i]=0;
+        for(ll j = i - 3 ; j < i ; j ++)a[i]+=a[j];
+    }
+}
+int main(){
+    cin>>n;
+    sang();
+    cout<<a[n];
+}
