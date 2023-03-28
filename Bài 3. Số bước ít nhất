@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+int main(){
+    //1578 23456
+    int n;cin>>n;
+    int a[n];for(ll i=0 ;i<n;i++)cin>>a[i];
+    int ans = 0 ;
+    int dp[n];
+    memset(dp,0, sizeof(dp));
+    dp[0]=1;
+    for(int i = 1 ; i< n ; i ++){
+         for (int j = 0 ; j < i  ; j ++){
+             if( a[j] < a[i] )dp[i]=max ( dp[i], dp[j]+1);
+         }
+         dp [i]=max( dp[i], 1);
+    }
+    for(int i=0 ;i < n ;i++)ans=max(ans, dp[i]);
+    // for(auto x : dp)cout<<x<< " ";
+    cout<< n - ans;
+}
