@@ -1,0 +1,16 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+int main(){
+    ll s ; cin>>s;
+    ll dp[s+1];
+    ll x= (ll)sqrt(s);
+    dp[0]=1;
+    for( ll i = 1 ; i<= s ; i++){
+        dp[i]= 1e9;
+        for(ll j = 1 ; j<= x ; j++){
+            if( i-j*j >=0  && dp[i- j *j]!=1e9 )dp[i]=min(dp[i], dp[i - j *j] +1);
+        }
+    }
+    cout<<dp[s]-1;
+}
