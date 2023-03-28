@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define f first
+#define s second
+#define pb push_back
+#define For(i,a,b) for(int i = a ; i <= b; i++)
+ll mod=1e9+7;
+ll a[100005], n , m , dp[100001][105];
+ll check(){
+    For(i, 1 , n){
+        if(a[i]){
+            dp[i][a[i]] += dp[i-1][a[i]] + dp[i-1][a[i]-1] + dp[i-1][a[i]+1];
+            dp[i][a[i]] %= mod;
+        }
+        else {
+            For(j,1,m){
+                dp[i][j] += dp[i-1][j] + dp[i-1][j-1] + dp[i-1][j+1];
+                dp[i][j] %= mod;
+            }
+        }
+    }
+    ll ans=0;
+    For(i,1,m){
+        ans+=dp[n][i];
+        ans%=mod;
+    }
+    return ans;
+}
+int main(){
+    cin>>n>>m;
+    For(i,1,n)cin >>a[i];
+    memset(dp, 0 ,sizeof(dp) );
+    if(a[1])dp[0][a[1]] = 1;
+    else {
+        for(ll i= 1; i<=m+3;i+=3)dp[0][i]=1;
+    }
+    cout<<check();
+}
