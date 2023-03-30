@@ -1,0 +1,60 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ii pair<int,int>
+ll a , b;
+vector<ll>v1,v2;
+ll tinh1(ll n){
+    ll ans = 1;
+    for(ll i= 1 ; i<=n; i++){
+         ans*=9;
+    }
+    return ans;
+}
+ll tinh2(ll n){
+    ll ans = 10;
+    ll tmp = 81;
+    for(ll i = 2 ; i<= n ; i++){
+        ans+=tmp;
+        tmp*=9;
+    }
+    return ans;
+}
+void init(ll n,vector<ll> &v){
+    while(n){
+        v.push_back(n%10);
+        n/=10;
+    }
+    reverse(v.begin() , v.end());
+}
+ll back(ll i ,vector<ll>v , ll pre ){
+    if(i==1ll*v.size() - 1){
+        ll ans = 0;
+        for(ll  j  =  0 ; j <= v[i] ; j++){
+            if(j != pre)ans++;
+        }
+        return ans;
+    }
+    else {
+            ll ans = 0;
+            for(ll j = 0 ; j<= v[i] - 1 ; j++){
+                if(j != pre){
+                    if(j == 0 && i == 0)ans+=tinh2(1ll*v.size()-i-1);
+                    else ans+=tinh1(1ll*v.size() - i - 1);
+                }
+            }
+            if(v[i] != pre)return ans + back(i+1 , v , v[i]);
+            else return ans;
+    }
+    return 0;
+}
+ll solve(ll a,vector<ll>v){
+    if(a == 0)return 1;
+    else if(a < 0 )return 0;
+    init(a,v);
+    return back(0,v , -1);
+}
+int main(){
+    cin >> a>> b;
+    cout<< solve(b,v1) - solve(a-1,v2);
+}
