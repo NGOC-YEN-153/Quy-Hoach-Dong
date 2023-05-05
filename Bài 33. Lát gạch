@@ -1,1 +1,100 @@
-.
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+int mod = 1e9 + 7;
+vector<int> good_mask;
+vector<int> ft[1026]; // forward star == na ná danh sách kề
+int dp[1001][1026];
+int a , b;
+int getbit(int k , int a){
+    return  (a>>(k-1)) & 1;
+}
+void setbit(int k , int &n , int c){
+    if(c) n |= (1<<(k-1));
+    else n &= ~(1<<(k-1));
+}
+bool checkgood(int mask,int sizee){ // check xau tot : viên gạch thằng đứng thỏa mãn, có thể còn các viên gạch nằm ngang (0) cần được lấp đầy
+    for(int i = 1 ; i<= sizee;i++){
+        if(getbit(i,mask)){
+            int cnt = 0;
+            for(int j = i ; j<= sizee;j++){
+                if(getbit(j,mask))cnt++ , i = j;
+                else break;
+            }
+            if(cnt & 1) return false;
+        }
+    }
+    return true;
+}
+bool check(int mask , int &premask){ // sinh xaau
+    for(int i = 1 ; i<= a ; i++){ 
+        if(!getbit(i,mask)){
+            if(getbit(i,premask)) return false;
+            else setbit(i,premask,1);
+        }
+    }
+    return true;
+}
+int back(int col , int mask ){
+    if(col == 1)return dp[1][mask];
+    int ans = 0 ;
+    for(int premask : ft[mask]){
+        if(dp[col-1][premask] != -1  )ans+=dp[col-1][premask];
+        else ans+= back(col - 1 , premask);
+        ans %= mod;
+    }
+    dp[col][mask] = ans;
+    return  ans;
+}
+int main(){
+    //input
+    cin >> a >> b;
+    for(int mask = 0 ; mask < (1<<a) ; mask ++){
+        if(checkgood(mask , a))good_mask.emplace_back(mask);
+    }
+    // setup forward star
+    for(int i =0 ; i < (1<<a) ; i++){
+        for(int j = 0 ; j < good_mask.size();j++){
+            int tmp = good_mask[j];
+            if(check(i,tmp))ft[i].emplace_back(tmp);
+        }
+    }
+    // đánh dấu các  bài toán đều chưa được giải quyết
+    for(int i = 1 ; i<= b ;i++){
+        for(int mask = 0 ; mask < (1<<a) ; mask ++ )dp[i][mask] = -1;
+}
+    // BASE
+    for(int mask = 0 ; mask < (1<<a); mask ++){
+        dp[1][mask] = 0 ;
+}
+    dp[1][(1<<a) - 1] = 1;
+    // simple case 1 
+    if(a == 1){
+       if(b % 2 == 0){
+          cout<<1<<endl;
+           return 0;
+       }
+        else {
+            cout<<0<<endl;
+            return 0;
+       }
+    }
+    // simple case 2
+    if(b == 1){
+       if(a % 2 == 0){
+          cout<<1<<endl;
+           return 0;
+       }
+        else {
+            cout<<0<<endl;
+            return 0;
+       }
+    }
+    // process
+    int ans = 0 ;
+    for(int mask : good_mask){
+        ans += back(b , mask);
+        ans %= mod;
+    }
+    cout<<ans<<endl;
+}
