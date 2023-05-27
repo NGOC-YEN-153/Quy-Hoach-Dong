@@ -1,1 +1,40 @@
-
+// sắp xếp theo kết thúc , đứng ở vị trí i cần biết tốt nhất của bắt đầu  - 1  =>> map
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+struct job{
+    int x  , y;
+    ll w;
+};
+bool comp(job a , job b){
+    return a.y < b.y;
+}
+void solve(){
+    int n ;
+    cin >> n;
+    vector<job> a(n+1);
+    a[0] = job{0,0,0};
+    map<int,ll> mp;
+    mp[0] = 0;
+    for(int i = 1 ; i <= n; i++){
+        int x , y;
+        ll w;
+        cin >> x >> y >> w;
+        a[i]= job{x,y,w};
+    }
+    sort(a.begin() + 1, a.end() , comp);
+    for(int i = 1 ; i <= n ; i++){
+        int x = a[i].x , y = a[i].y ;
+        ll w = a[i].w;
+        auto it = mp.lower_bound(x) , it2 = mp.lower_bound(y);
+        --it;
+        --it2;
+        mp[y] = max({mp[y] ,(*it).second + w , (*it2).second });
+    }
+    cout<<mp[a[n].y]<<endl;
+}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+    solve();
+}
